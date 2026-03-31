@@ -2081,6 +2081,14 @@ const AccountsView = ({ accounts, setAccounts }) => {
   return (
     <div style={{ padding: "0 16px 100px" }}>
 
+      {/* Header z przyciskiem dodawania */}
+      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 20 }}>
+        <div style={{ fontSize: 13, fontWeight: 700, color: "#64748b", textTransform: "uppercase", letterSpacing: "0.1em" }}>Moje konta</div>
+        <button onClick={openAdd} style={{ display: "flex", alignItems: "center", gap: 6, background: "linear-gradient(135deg,#1e40af,#3b82f6)", border: "none", borderRadius: 10, padding: "8px 14px", color: "white", fontWeight: 700, fontSize: 13, cursor: "pointer", fontFamily: "'Space Grotesk', sans-serif" }}>
+          <PlusCircle size={14}/> Nowe konto
+        </button>
+      </div>
+
       {/* Konta bie  ce   tylko je li istniej  */}
       {biezace.length > 0 && <>
         <SectionHeader label="💳 Konta bieżące" total={totalBiezace} color="#3b82f6"/>
