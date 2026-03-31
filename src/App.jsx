@@ -82,31 +82,14 @@ const getCat = (id) => CATEGORIES.find(c => c.id === id) || { id, label: id, ico
 const getAllCats = (customCats = []) => [...BASE_CATEGORIES, ...customCats];
 
 const INITIAL_ACCOUNTS = [
-  { id: 1, name: "Konto główne",     type: "savings", bank: "Bank",      balance: 8500.00,  color: "#3b82f6", iban: "" },
-  { id: 2, name: "Oszczędności",     type: "savings", bank: "Bank",      balance: 3200.00,  color: "#06b6d4", iban: "" },
-  { id: 3, name: "Inwestycje",       type: "invest",   bank: "Broker",    balance: 9500.00,  color: "#8b5cf6", iban: "" },
-  { id: 4, name: "Konto IKZE",       type: "savings",  bank: "Broker",    balance: 1200.00,  color: "#10b981", iban: "" },
+  { id: 1, name: "Konto główne",  type: "savings", bank: "", balance: 0, color: "#3b82f6", iban: "" },
 ];
 
 
 //    RECURRING BILLS                                                           
 //    PAYMENTS                                                                  
 // type: "credit" | "bill" | "sub" | "savings"
-const INITIAL_PAYMENTS = [
-  // Zobowiązania kredytowe
-  { id: 1, name: "Kredyt hipoteczny", type: "credit", amount: -1500.00, cat: "rachunki", acc: 1, color: "#3b82f6", freq: "monthly", dueDay: 10, trackPaid: true },
-  { id: 2, name: "Kredyt samochodowy", type: "credit", amount: -800.00, cat: "rachunki", acc: 1, color: "#f97316", freq: "monthly", dueDay: 20, trackPaid: true },
-  // Rachunki
-  { id: 3, name: "Czynsz",      type: "bill",   amount:  -700.00, cat: "rachunki", acc: 1, color: "#f59e0b", freq: "monthly", dueDay:  5, trackPaid: true, shared: false },
-  { id: 4, name: "Internet",    type: "bill",   amount:  -100.00, cat: "rachunki", acc: 1, color: "#06b6d4", freq: "monthly", dueDay: 15, trackPaid: true },
-  { id: 5, name: "Prąd/Gaz",    type: "bill",   amount:  -200.00, cat: "rachunki", acc: 1, color: "#f59e0b", freq: "monthly", dueDay: 20, trackPaid: true },
-  // Subskrypcje
-  { id: 6, name: "Spotify",     type: "sub",    amount:   -23.00, cat: "muzyka",   acc: 1, color: "#1db954", freq: "monthly", dueDay:  5, trackPaid: true },
-  { id: 7, name: "Netflix",     type: "sub",    amount:   -43.00, cat: "rozrywka", acc: 1, color: "#e50914", freq: "monthly", dueDay:  5, trackPaid: true },
-  // Cele oszczędnościowe
-  { id: 8, name: "Oszczędności",  type: "savings", amount: -1000.00, cat: "inwestycje", acc: 1, color: "#10b981", freq: "monthly", dueDay: 10, trackPaid: true },
-  { id: 9, name: "Inwestycje ETF", type: "savings", amount:  -500.00, cat: "inwestycje", acc: 3, color: "#f59e0b", freq: "monthly", dueDay: 10, trackPaid: true },
-];
+const INITIAL_PAYMENTS = [];
 
 const INITIAL_TEMPLATES = [
   { id: 1, desc: "Sklep",        amount: 50,    cat: "zakupy",    acc: 1 },
@@ -122,73 +105,11 @@ const INITIAL_PAID = {};
 
 
 //    SAVINGS GOALS                                                              
-const INITIAL_GOALS = [
-  { id: 1, name: "Fundusz awaryjny", target: 15000, saved: 5000, accId: 2, color: "#10b981", emoji: "🛡️" },
-  { id: 2, name: "Wakacje",          target: 8000,  saved: 1200, accId: 2, color: "#06b6d4", emoji: "🏖️" },
-];
+const INITIAL_GOALS = [];
 
-// DANE DEMONSTRACYJNE - zastąp własnymi transakcjami
-const INITIAL_TRANSACTIONS = [
-  // PRZYCHODY
-  { id:  1, date: "2026-03-25", desc: "Wypłata",         amount:  7500.00, cat: "przychód",   acc: 1 },
-  { id:  2, date: "2026-03-10", desc: "Premia",           amount:  1200.00, cat: "przychód",   acc: 1 },
+const INITIAL_TRANSACTIONS = [];
 
-  // RACHUNKI
-  { id:  3, date: "2026-03-10", desc: "Kredyt hipoteczny", amount: -1500.00, cat: "rachunki",  acc: 1 },
-  { id:  4, date: "2026-03-05", desc: "Czynsz",            amount:  -700.00, cat: "rachunki",  acc: 1 },
-  { id:  5, date: "2026-03-15", desc: "Internet",          amount:  -100.00, cat: "rachunki",  acc: 1 },
-  { id:  6, date: "2026-03-20", desc: "Prąd/Gaz",          amount:  -200.00, cat: "rachunki",  acc: 1 },
-
-  // JEDZENIE
-  { id:  7, date: "2026-03-22", desc: "Biedronka",         amount:  -180.00, cat: "jedzenie",  acc: 1 },
-  { id:  8, date: "2026-03-18", desc: "Lidl",              amount:  -130.00, cat: "jedzenie",  acc: 1 },
-  { id:  9, date: "2026-03-14", desc: "Restauracja",       amount:   -95.00, cat: "jedzenie",  acc: 1 },
-  { id: 10, date: "2026-03-08", desc: "Zakupy spożywcze",  amount:  -160.00, cat: "jedzenie",  acc: 1 },
-
-  // TRANSPORT
-  { id: 11, date: "2026-03-21", desc: "Paliwo",            amount:  -200.00, cat: "transport", acc: 1 },
-  { id: 12, date: "2026-03-12", desc: "Paliwo",            amount:  -180.00, cat: "transport", acc: 1 },
-  { id: 13, date: "2026-03-17", desc: "Parking",           amount:   -30.00, cat: "transport", acc: 1 },
-
-  // ZAKUPY
-  { id: 14, date: "2026-03-16", desc: "Sklep odzieżowy",   amount:  -250.00, cat: "ubrania",   acc: 1 },
-  { id: 15, date: "2026-03-11", desc: "Elektronika",       amount:  -350.00, cat: "zakupy",    acc: 1 },
-
-  // ROZRYWKA
-  { id: 16, date: "2026-03-20", desc: "Kino",              amount:   -40.00, cat: "rozrywka",  acc: 1 },
-  { id: 17, date: "2026-03-13", desc: "Spotify",           amount:   -23.00, cat: "muzyka",    acc: 1 },
-  { id: 18, date: "2026-03-05", desc: "Netflix",           amount:   -43.00, cat: "rozrywka",  acc: 1 },
-
-  // KAWIARNIA
-  { id: 19, date: "2026-03-23", desc: "Cafe",              amount:   -18.00, cat: "kawiarnia", acc: 1 },
-  { id: 20, date: "2026-03-19", desc: "Kawa",              amount:   -15.00, cat: "kawiarnia", acc: 1 },
-  { id: 21, date: "2026-03-15", desc: "Kawa z przyjacielem", amount: -24.00, cat: "kawiarnia", acc: 1 },
-
-  // INWESTYCJE
-  { id: 22, date: "2026-03-10", desc: "ETF MSCI World",    amount: -1000.00, cat: "inwestycje", acc: 3 },
-  { id: 23, date: "2026-03-10", desc: "Oszczędności",      amount: -1000.00, cat: "inwestycje", acc: 2 },
-
-  // ZDROWIE
-  { id: 24, date: "2026-03-09", desc: "Apteka",            amount:   -45.00, cat: "zdrowie",   acc: 1 },
-  { id: 25, date: "2026-03-03", desc: "Siłownia",          amount:   -80.00, cat: "zdrowie",   acc: 1 },
-];
-
-const INITIAL_BUDGETS = [
-  { cat: "rząd",        limit: 7000, color: "#3b82f6" },
-  { cat: "rachunki",    limit: 5000, color: "#f59e0b" },
-  { cat: "inwestycje",  limit: 4000, color: "#8b5cf6" },
-  { cat: "zakupy",      limit: 2000, color: "#06b6d4" },
-  { cat: "transport",   limit: 1500, color: "#f97316" },
-  { cat: "jedzenie",    limit: 1200, color: "#ef4444" },
-  { cat: "rozrywka",    limit: 800,  color: "#ec4899" },
-  { cat: "muzyka",      limit: 700,  color: "#f43f5e" },
-  { cat: "prezenty",    limit: 400,  color: "#e879f9" },
-  { cat: "bukmacher",   limit: 400,  color: "#dc2626" },
-  { cat: "ubrania",     limit: 500,  color: "#818cf8" },
-  { cat: "alkohol",     limit: 300,  color: "#2563eb" },
-  { cat: "zdrowie",     limit: 500,  color: "#10b981" },
-  { cat: "kawiarnia",   limit: 300,  color: "#a78bfa" },
-];
+const INITIAL_BUDGETS = [];
 
 const XTB_PORTFOLIO = [
   // Konto inwestycyjne
@@ -5083,7 +5004,7 @@ function loadSnapshotFromJSON(json) {
 
 export default function App() {
   const [tab, setTab] = useState("dashboard");
-  const [month, setMonth] = useState(2);
+  const [month, setMonth] = useState(new Date().getMonth());
   const [customCats,   setCustomCats]   = useState([]);
   const [vacationArchive, setVacationArchive] = useState(
     () => JSON.parse(localStorage.getItem("ft_vacations") || "[]")
