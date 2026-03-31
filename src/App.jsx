@@ -2009,7 +2009,7 @@ const AccountsView = ({ accounts, setAccounts }) => {
   const openEdit = (acc) => { setEditAcc(acc); setForm({ name: acc.name, bank: acc.bank, balance: String(acc.balance), type: acc.type, color: acc.color }); setModal(true); };
 
   const saveAccount = () => {
-    if (!form.name || !form.balance) return;
+    if (!form.name || form.balance === "") return;
     if (editAcc) {
       setAccounts(a => a.map(x => x.id === editAcc.id ? { ...x, ...form, balance: parseFloat(form.balance) } : x));
     } else {
@@ -5038,7 +5038,7 @@ export default function App() {
     loadFromStorage().then(d => {
       try {
         if (d) {
-          if (Array.isArray(d.accounts) && d.accounts.length)     setAccounts(d.accounts);
+          if (Array.isArray(d.accounts))                           setAccounts(d.accounts);
           if (Array.isArray(d.transactions) && d.transactions.length) setTransactions(d.transactions);
           if (Array.isArray(d.budgets)  && d.budgets.length)      setBudgets(d.budgets);
           if (Array.isArray(d.payments))                           setPayments(d.payments);
