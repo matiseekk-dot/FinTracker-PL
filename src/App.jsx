@@ -358,7 +358,7 @@ const TemplatesEditor = () => {
 const SettingsPanel = ({ open, onClose, accounts, transactions, budgets, payments, paid,
                          goals, customCats, defaultAcc, setDefaultAcc,
                          setTransactions, setAccounts, setBudgets, setCycleDay, setCustomCats,
-                         cycleDay, vacationArchive = [] }) => {
+                         cycleDay, vacationArchive = [], partnerName = "Partner", setPartnerName }) => {
   const [newCatLabel, setNewCatLabel] = useState("");
   const [newCatColor, setNewCatColor] = useState("#06b6d4");
   const [newCatType,  setNewCatType]  = useState("expense"); // expense | income
@@ -620,6 +620,24 @@ const SettingsPanel = ({ open, onClose, accounts, transactions, budgets, payment
               )}
             </button>
           ))}
+        </div>
+
+        <SectionTitle>👫 Nazwa partnera / partnerki</SectionTitle>
+        <p style={{ fontSize: 13, color: "#64748b", marginBottom: 10, lineHeight: 1.5 }}>
+          Wyświetlana w module wspólnych rachunków.
+        </p>
+        <div style={{ display: "flex", gap: 8, marginBottom: 20, alignItems: "center" }}>
+          <input
+            value={partnerName}
+            onChange={e => setPartnerName && setPartnerName(e.target.value)}
+            placeholder="np. Kinga, Marek, Partner…"
+            maxLength={30}
+            style={{
+              flex: 1, background: "#0a1120", border: "1px solid #1a2744",
+              borderRadius: 10, padding: "10px 14px", color: "#e2e8f0",
+              fontSize: 16, fontFamily: "inherit",
+            }}
+          />
         </div>
 
         <SectionTitle>📅 Cykl rozliczeniowy</SectionTitle>
@@ -3812,7 +3830,7 @@ const GoalsView = ({ goals, setGoals, accounts, budgets, setBudgets, transaction
 };
 
 //    PAYMENTS VIEW                                                             
-const PaymentsView = ({ payments, setPayments, paid, setPaid, transactions, setTransactions, accounts, month: globalMonth }) => {
+const PaymentsView = ({ payments, setPayments, paid, setPaid, transactions, setTransactions, accounts, month: globalMonth, partnerName = "Partner" }) => {
   const TODAY_FULL = new Date();
   const TODAY_DAY  = TODAY_FULL.getDate();
   const TODAY_ISO  = TODAY_FULL.toISOString().split("T")[0]; // "2026-04-01"
@@ -4246,14 +4264,14 @@ const PaymentsView = ({ payments, setPayments, paid, setPaid, transactions, setT
           </button>
         </div>
 
-        {/* Shared with Kinga toggle */}
+        {/* Shared with partner toggle */}
         <div style={{ marginBottom: 14, display: "flex", alignItems: "center", justifyContent: "space-between",
           background: form.shared ? "#0d1e12" : "#060b14",
           border: `1px solid ${form.shared ? "#16a34a44" : "#1a2744"}`,
           borderRadius: 10, padding: "12px 14px" }}>
           <div>
-            <div style={{ fontSize: 13, fontWeight: 600 }}>👫 Wspólne z Kingą</div>
-            <div style={{ fontSize: 11, color: "#475569", marginTop: 2 }}>Liczy się do rozliczenia wspólnego</div>
+            <div style={{ fontSize: 13, fontWeight: 600 }}>{`👫 Wspólne z ${partnerName}`}</div>
+            <div style={{ fontSize: 11, color: "#475569", marginTop: 2 }}>{`Liczy się do rozliczenia z ${partnerName}`}</div>
           </div>
           <button onClick={() => setForm(f => ({...f, shared: !f.shared}))} style={{
             width: 44, height: 24, borderRadius: 12, border: "none", cursor: "pointer",
@@ -4441,7 +4459,7 @@ const TrendKategorii = ({ transactions, month, cycleDay }) => {
   );
 };
 
-const AnalyticsView = ({ transactions, payments, paid, month, cycleDay = 1 }) => {
+const AnalyticsView = ({ transactions, payments, paid, month, cycleDay = 1, partnerName = "Partner" }) => {
   const [activeView, setActiveView] = useState("month"); // "month" | "period"
   const [period, setPeriod]         = useState("month"); // month|quarter|half|year
   const [groupBy, setGroupBy]       = useState("cat");   // cat | place
@@ -4816,9 +4834,9 @@ const AnalyticsView = ({ transactions, payments, paid, month, cycleDay = 1 }) =>
         });
         if (sharedItems.length === 0) return (
           <Card style={{ marginTop: 0 }}>
-            <div style={{ fontSize: 12, fontWeight: 700, color: "#64748b", textTransform: "uppercase", letterSpacing: "0.08em", marginBottom: 8 }}>👫 Rozliczenie ze współlokatorem</div>
+            <div style={{ fontSize: 12, fontWeight: 700, color: "#64748b", textTransform: "uppercase", letterSpacing: "0.08em", marginBottom: 8 }}>{`👫 Rozliczenie z ${partnerName}`}</div>
             <div style={{ fontSize: 13, color: "#334155", textAlign: "center", padding: "12px 0" }}>
-              Brak wspólnych rachunków — zaznacz „Wspólne z Kingą" w Płatnościach
+              {`Brak wspólnych rachunków — zaznacz „Wspólne z ${partnerName}" w Płatnościach`}
             </div>
           </Card>
         );
@@ -4833,7 +4851,7 @@ const AnalyticsView = ({ transactions, payments, paid, month, cycleDay = 1 }) =>
           <Card style={{ marginTop: 0 }}>
             <div style={{ fontSize: 12, fontWeight: 700, color: "#10b981",
               textTransform: "uppercase", letterSpacing: "0.08em", marginBottom: 14 }}>
-              👫 Rozliczenie ze współlokatorem · {MONTH_NAMES[month]}
+              {`👫 Rozliczenie z ${partnerName} · ${MONTH_NAMES[month]}`}
             </div>
 
             {/* Shared items list */}
@@ -4871,7 +4889,7 @@ const AnalyticsView = ({ transactions, payments, paid, month, cycleDay = 1 }) =>
               {[
                 { label: "Razem", val: totalShared, color: "#e2e8f0" },
                 { label: "Twoja połowa", val: halfTotal, color: "#60a5fa" },
-                { label: "Połowa partnera", val: halfTotal, color: "#f59e0b" },
+                { label: `Połowa ${partnerName}`, val: halfTotal, color: "#f59e0b" },
               ].map(({ label, val, color }) => (
                 <div key={label} style={{ background: "#060b14", borderRadius: 10,
                   padding: "10px 8px", textAlign: "center" }}>
@@ -5026,6 +5044,7 @@ export default function App() {
   const [settingsOpen, setSettingsOpen] = useState(false);
   const [cycleDay,     setCycleDay]     = useState(1);
   const [defaultAcc,   setDefaultAcc]   = useState(1);
+  const [partnerName,  setPartnerName]  = useState("Partner");
   const [goals,        setGoals]        = useState(INITIAL_GOALS);
   const [fabOpen, setFabOpen] = useState(false);
   const [loaded,        setLoaded]        = useState(false);
@@ -5035,7 +5054,7 @@ export default function App() {
   const [saveIndicator, setSaveIndicator] = useState(false);
   const [importErr,     setImportErr]     = useState("");
   const stateRef = useRef(null);
-  stateRef.current = { accounts, transactions, budgets, payments, paid, goals, month, cycleDay, customCats, defaultAcc,
+  stateRef.current = { accounts, transactions, budgets, payments, paid, goals, month, cycleDay, customCats, defaultAcc, partnerName,
     templates: (() => { try { return JSON.parse(localStorage.getItem("ft_templates") || "null"); } catch(_) { return null; } })(),
     vacation: (() => { try { return JSON.parse(localStorage.getItem("ft_vacation") || "null"); } catch(_) { return null; } })(),
     vacationArchiveData: vacationArchive,
@@ -5059,6 +5078,7 @@ export default function App() {
           if (Array.isArray(d.vacationArchiveData)) setVacationArchive(d.vacationArchiveData);
           if (d.month   != null && d.month   >= 0 && d.month   <= 11) setMonth(d.month);
           if (d.cycleDay != null && d.cycleDay >= 1 && d.cycleDay <= 28) setCycleDay(d.cycleDay);
+          if (d.partnerName) setPartnerName(d.partnerName);
         }
       } catch(e) {
         console.error("[FT] error restoring data:", e);
@@ -5193,9 +5213,9 @@ export default function App() {
         {tab === "dashboard"    && <Dashboard accounts={accounts} transactions={transactions} setTransactions={setTransactions} payments={payments} paid={paid} month={month} setMonth={setMonth} onAddTx={() => setQuickAddOpen(true)} cycleDay={cycleDay}/>}
         {tab === "accounts"     && <AccountsView accounts={accounts} setAccounts={setAccounts}/>}
         {tab === "transactions" && <TransactionsView transactions={transactions} setTransactions={setTransactions} accounts={accounts} setAccounts={setAccounts} allCats={allCategories} _forceOpenModal={fabOpen} _onModalClose={() => setFabOpen(false)} defaultAcc={defaultAcc}/>}
-        {tab === "payments"     && <PaymentsView payments={payments} setPayments={setPayments} paid={paid} setPaid={setPaid} transactions={transactions} setTransactions={setTransactions} accounts={accounts} month={month}/>}
+        {tab === "payments"     && <PaymentsView payments={payments} setPayments={setPayments} paid={paid} setPaid={setPaid} transactions={transactions} setTransactions={setTransactions} accounts={accounts} month={month} partnerName={partnerName}/>}
         {tab === "goals"        && <GoalsView goals={goals} setGoals={setGoals} accounts={accounts} budgets={budgets} setBudgets={setBudgets} transactions={transactions} month={month} cycleDay={cycleDay} vacationArchive={vacationArchive} setVacationArchive={setVacationArchive}/>}
-        {tab === "analytics"    && <AnalyticsView transactions={transactions} payments={payments} paid={paid} month={month} cycleDay={cycleDay}/>}
+        {tab === "analytics"    && <AnalyticsView transactions={transactions} payments={payments} paid={paid} month={month} cycleDay={cycleDay} partnerName={partnerName}/>}
       </div>
 
       {/* Settings panel */}
@@ -5229,6 +5249,8 @@ export default function App() {
         defaultAcc={defaultAcc}
         setDefaultAcc={setDefaultAcc}
         vacationArchive={vacationArchive}
+        partnerName={partnerName}
+        setPartnerName={setPartnerName}
       />
 
       {/* Quick-add transaction modal (from reminder) */}
